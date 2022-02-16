@@ -1,0 +1,7 @@
+APPName: GeoPaper
+Mysql:
+  DataSource: root:WQAOIaiona8X@tcp(127.0.0.1:33069)/geopaper?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+Redis:
+  Addr: 127.0.0.1:63799
+  Password: WQAOIaiona8X
+  DB: 0
