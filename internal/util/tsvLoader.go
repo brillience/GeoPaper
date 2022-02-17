@@ -74,7 +74,7 @@ func PushFieldsOfStudyToDB(filePath string, batchSize int) {
 	stopSignal <- 1
 	wg.Wait()
 }
-func PushFieldsOfStudyChildren(filePath string, batchSize int) {
+func PushFieldsOfStudyChildrenToDB(filePath string, batchSize int) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalf("Open file %s error: %s \n", filePath, err.Error())
