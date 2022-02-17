@@ -5,7 +5,7 @@ type FieldOfStudyChildren struct {
 	ChildFieldOfStudyId int64
 }
 
-func (FieldOfStudyChildren) CreateInBatches(items []FieldOfStudyChildren, size int) {
+func (FieldOfStudyChildren) CreateInBatches(items []*FieldOfStudyChildren, size int) {
 	db.CreateInBatches(items, size)
 }
 

@@ -2,11 +2,10 @@ package model
 
 import (
 	"geopaper/etc"
-	"log"
-
 	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"log"
 )
 
 var (

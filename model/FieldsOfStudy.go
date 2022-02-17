@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 type FieldsOfStudy struct {
 	FieldOfStudyId   int64 `gorm:"primaryKey,uniqueIndex"`
@@ -15,12 +18,18 @@ type FieldsOfStudy struct {
 	CreateDate       time.Time
 }
 
-func (FieldsOfStudy) CreateInBatches(items []FieldsOfStudy, size int) {
-	db.CreateInBatches(items, size)
+func (receiver FieldsOfStudy) CreateInBatches(items []*FieldsOfStudy, batchSize int) {
+	db.CreateInBatches(items, batchSize)
 }
 
-func (FieldsOfStudy) QueryById(id int64) *FieldsOfStudy {
+func (receiver FieldsOfStudy) QueryById(id int64) *FieldsOfStudy {
 	item := FieldsOfStudy{}
 	db.First(&item, id)
 	return &item
+}
+
+func (receiver FieldsOfStudy) QueryByNormalizedNameAndLevel(normalizedName string,level int) []FieldsOfStudy {
+	res := []FieldsOfStudy{}
+	db.Where("normalizedName = ？ AND level = ?",normalizedName,strconv.Itoa(level)).Find(&res)
+	return res
 }
