@@ -17,11 +17,17 @@ func PushFieldsOfStudyToDB(filePath string, batchSize int) {
 	reader := tsvreader.New(file)
 	items := []*model.FieldsOfStudy{}
 	var mutex sync.Mutex
+	var wg sync.WaitGroup
+	wg.Add(1)
 	stopSignal := make(chan int)
 	go func() {
+		defer wg.Done()
 		for {
 			select {
 			case <-stopSignal:
+				if len(items)!=0{
+					model.FieldsOfStudy{}.CreateInBatches(items, batchSize)
+				}
 				break
 			default:
 				if len(items) == batchSize {
@@ -66,7 +72,7 @@ func PushFieldsOfStudyToDB(filePath string, batchSize int) {
 		log.Fatalln(err.Error())
 	}
 	stopSignal <- 1
-
+	wg.Wait()
 }
 func PushFieldsOfStudyChildren(filePath string, batchSize int) {
 	file, err := os.Open(filePath)
@@ -77,11 +83,17 @@ func PushFieldsOfStudyChildren(filePath string, batchSize int) {
 	reader := tsvreader.New(file)
 	items := []*model.FieldOfStudyChildren{}
 	var mutex sync.Mutex
+	var wg sync.WaitGroup
+	wg.Add(1)
 	stopSignal := make(chan int)
 	go func() {
+		defer wg.Done()
 		for {
 			select {
 			case <-stopSignal:
+				if len(items)!=0{
+					model.FieldOfStudyChildren{}.CreateInBatches(items, batchSize)
+				}
 				break
 			default:
 				if len(items) == batchSize {
@@ -110,5 +122,6 @@ func PushFieldsOfStudyChildren(filePath string, batchSize int) {
 		log.Fatalln(err.Error())
 	}
 	stopSignal <- 1
+	wg.Wait()
 
 }
