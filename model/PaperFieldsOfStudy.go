@@ -1,10 +1,10 @@
 package model
 
 import (
+	"github.com/gomodule/redigo/redis"
 	"log"
 	"strconv"
 
-	"github.com/go-redis/redis/v8"
 )
 
 // 采用redis数据库
@@ -15,22 +15,20 @@ type PaperFieldsOfStudy struct {
 }
 
 func (paperFieldsOfStudy *PaperFieldsOfStudy) SetPaperIdToDB() {
-	err := rdb.Set(rdb.Context(), strconv.FormatInt(paperFieldsOfStudy.FieldOfStudyId, 10), paperFieldsOfStudy.PaperId, 0).Err()
+	conn := rdbPool.Get()
+	defer conn.Close()
+	_, err := conn.Do("SET", strconv.FormatInt(paperFieldsOfStudy.FieldOfStudyId, 10), paperFieldsOfStudy.PaperId)
 	if err != nil {
 		log.Fatalf("Set %d error: %s", paperFieldsOfStudy.FieldOfStudyId, err.Error())
 	}
-
 }
 
-func (paperFieldsOfStudy *PaperFieldsOfStudy) GetPaperIdFromDB(fieldOfStudyId int64) string {
-	s, err := rdb.Get(rdb.Context(), strconv.FormatInt(fieldOfStudyId, 10)).Result()
-	switch {
-	case err == redis.Nil:
+func (paperFieldsOfStudy *PaperFieldsOfStudy) GetPaperIdFromDB(fieldOfStudyId int64) int64 {
+	conn := rdbPool.Get()
+	defer conn.Close()
+	reply, err := redis.Int64(conn.Do("GET", strconv.FormatInt(fieldOfStudyId, 10)))
+	if err!=nil{
 		log.Printf("Get %d key not found!", paperFieldsOfStudy.FieldOfStudyId)
-
-	case err == nil:
-		log.Fatalln("Get error: ", err.Error())
 	}
-	return s
-
+	return reply
 }

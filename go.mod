@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/go-redis/redis/v8 v8.11.4
+	github.com/gomodule/redigo v1.8.8
 	github.com/jinzhu/configor v1.2.1
 	github.com/valyala/tsvreader v1.0.0
 	gorm.io/driver/mysql v1.2.3

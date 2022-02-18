@@ -3,6 +3,8 @@ package model
 import (
 	"geopaper/etc"
 	"log"
+	"runtime"
+	"time"
 
 	"github.com/gomodule/redigo/redis"
 	"gorm.io/driver/mysql"
@@ -11,6 +13,7 @@ import (
 
 var (
 	db *gorm.DB
+	rdbPool *redis.Pool
 )
 
 func init() {
@@ -26,5 +29,24 @@ func init() {
 		log.Fatalln("Initting database table error: ", err.Error())
 	}
 	// 连接redis
-	redis.NewPool
+	rdbPool = &redis.Pool{
+		Dial: func() (redis.Conn, error) {
+			c,err := redis.Dial("tcp",
+				etc.Config.Redis.Addr,
+				redis.DialDatabase(etc.Config.Redis.DB),
+				redis.DialReadTimeout(time.Duration(100)*time.Second),
+				redis.DialWriteTimeout(time.Duration(100)*time.Second),
+				redis.DialConnectTimeout(time.Duration(100)*time.Second),
+				redis.DialPassword(etc.Config.Redis.Password),
+				)
+			if err!=nil{
+				return nil, err
+			}
+			return c,nil
+		},
+		MaxIdle: runtime.GOMAXPROCS(runtime.NumCPU()),
+		MaxActive: runtime.GOMAXPROCS(runtime.NumCPU()),
+		IdleTimeout: time.Duration(100)*time.Second,
+		Wait: true,
+	}
 }
