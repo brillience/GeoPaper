@@ -1,7 +1,7 @@
 env-up:
 	docker-compose -f docker-compose-env.yaml up -d
 fill-db:
-	go test -v ./internal/util/
+	go run push_db.go
 	echo "Finished filling Database!"
 run:
 	go run main.go

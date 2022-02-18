@@ -12,6 +12,7 @@ import (
 )
 
 func PushFieldsOfStudyToDB(filePath string, batchSize int) {
+	log.Println("Starting PushFieldsOfStudyToDB...")
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalf("Open file %s error: %s \n", filePath, err.Error())
@@ -49,9 +50,11 @@ func PushFieldsOfStudyToDB(filePath string, batchSize int) {
 	}
 	var fieldsOfStudy model.FieldsOfStudy
 	fieldsOfStudy.CreateInBatches(items, 100)
+	log.Panicln("Finished PushFieldsOfStudyToDB!")
 }
 
 func PushFieldsOfStudyChildrenToDB(filePath string, batchSize int) {
+	log.Println("Starting PushFieldsOfStudyChildrenToDB...")
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalf("Open file %s error: %s \n", filePath, err.Error())
@@ -79,6 +82,7 @@ func PushFieldsOfStudyChildrenToDB(filePath string, batchSize int) {
 	}
 	var fieldChildren model.FieldOfStudyChildren
 	fieldChildren.CreateInBatches(items, 100)
+	log.Panicln("Finished PushFieldsOfStudyChildrenToDB!")
 }
 
 func PushPaperFieldsOfStudyToDB(filePath string) {
