@@ -14,16 +14,16 @@ type PaperFieldsOfStudy struct {
 	Score          float64
 }
 
-func (paperFieldsOfStudy *PaperFieldsOfStudy) SetPaperId() {
-	err := rdb.Set(rdb.Context(), strconv.Itoa(int(paperFieldsOfStudy.FieldOfStudyId)), paperFieldsOfStudy.PaperId, 0).Err()
+func (paperFieldsOfStudy *PaperFieldsOfStudy) SetPaperIdToDB() {
+	err := rdb.Set(rdb.Context(), strconv.FormatInt(paperFieldsOfStudy.FieldOfStudyId, 10), paperFieldsOfStudy.PaperId, 0).Err()
 	if err != nil {
 		log.Fatalf("Set %d error: %s", paperFieldsOfStudy.FieldOfStudyId, err.Error())
 	}
 
 }
 
-func (paperFieldsOfStudy *PaperFieldsOfStudy) GetPaperId(fieldOfStudyId int64) string {
-	s, err := rdb.Get(rdb.Context(), strconv.Itoa(int(fieldOfStudyId))).Result()
+func (paperFieldsOfStudy *PaperFieldsOfStudy) GetPaperIdFromDB(fieldOfStudyId int64) string {
+	s, err := rdb.Get(rdb.Context(), strconv.FormatInt(fieldOfStudyId, 10)).Result()
 	switch {
 	case err == redis.Nil:
 		log.Printf("Get %d key not found!", paperFieldsOfStudy.FieldOfStudyId)

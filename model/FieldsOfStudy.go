@@ -2,7 +2,6 @@ package model
 
 import (
 	"strconv"
-	"time"
 )
 
 type FieldsOfStudy struct {
@@ -15,7 +14,7 @@ type FieldsOfStudy struct {
 	PaperCount       int64
 	PaperFamilyCount int64
 	CitationCount    int64
-	CreateDate       time.Time
+	CreateDate       string
 }
 
 func (receiver FieldsOfStudy) CreateInBatches(items []*FieldsOfStudy, batchSize int) {
@@ -28,8 +27,8 @@ func (receiver FieldsOfStudy) QueryById(id int64) *FieldsOfStudy {
 	return &item
 }
 
-func (receiver FieldsOfStudy) QueryByNormalizedNameAndLevel(normalizedName string,level int) []FieldsOfStudy {
+func (receiver FieldsOfStudy) QueryByNormalizedNameAndLevel(normalizedName string, level int) []FieldsOfStudy {
 	res := []FieldsOfStudy{}
-	db.Where("normalizedName = ？ AND level = ?",normalizedName,strconv.Itoa(level)).Find(&res)
+	db.Where("normalized_name = ? AND level = ?", normalizedName, strconv.Itoa(level)).Find(&res)
 	return res
 }
