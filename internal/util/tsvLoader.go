@@ -82,6 +82,7 @@ func PushFieldsOfStudyChildrenToDB(filePath string, batchSize int) {
 }
 
 func PushPaperFieldsOfStudyToDB(filePath string) {
+	log.Println("Starting PushPaperFieldsOfStudyToDB...")
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalf("Open file %s error: %s \n", filePath, err.Error())
@@ -104,14 +105,14 @@ func PushPaperFieldsOfStudyToDB(filePath string) {
 			Score:          Score,
 		}
 		wg.Add(1)
-		go func(i model.PaperFieldsOfStudy) {
+		go func(i *model.PaperFieldsOfStudy) {
 			defer wg.Done()
 			i.SetPaperIdToDB()
-
-		}(item)
+		}(&item)
 	}
 	if err := reader.Error(); err != nil {
 		log.Fatalln(err.Error())
 	}
 	wg.Wait()
+	log.Panicln("Finished PushPaperFieldsOfStudyToDB!")
 }

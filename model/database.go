@@ -2,15 +2,15 @@ package model
 
 import (
 	"geopaper/etc"
-	"github.com/go-redis/redis/v8"
+	"log"
+
+	"github.com/gomodule/redigo/redis"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 )
 
 var (
-	db  *gorm.DB
-	rdb *redis.Client
+	db *gorm.DB
 )
 
 func init() {
@@ -26,9 +26,5 @@ func init() {
 		log.Fatalln("Initting database table error: ", err.Error())
 	}
 	// 连接redis
-	rdb = redis.NewClient(&redis.Options{
-		Addr:     etc.Config.Redis.Addr,
-		Password: etc.Config.Redis.Password,
-		DB:       etc.Config.Redis.DB,
-	})
+	redis.NewPool
 }

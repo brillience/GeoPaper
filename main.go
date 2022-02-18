@@ -1,8 +1,11 @@
 package main
 
-import "geopaper/internal/logic"
+import (
+	"geopaper/internal/util"
+)
 
 func main() {
-	getPaperIdLgic := logic.RegisterLogic(logic.GetPaperIdLogic)
-	getPaperIdLgic.Run("geology")
+	// getPaperIdLgic := logic.RegisterLogic(logic.GetPaperIdLogic)
+	// getPaperIdLgic.Run("geology")
+	util.PushPaperFieldsOfStudyToDB("MagData/PaperFieldsOfStudy.txt")
 }
