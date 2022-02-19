@@ -7,14 +7,14 @@ import (
 )
 
 type Configor struct {
-	APPName string `default:"GeoPaper"`
+	Appname string `default:"GeoPaper"`
 	Mysql   struct {
-		DataSource string `default:"root:WQAOIaiona8X@tcp(127.0.0.1:33069)/geopaper?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"`
+		Datasource string `default:"root:WQAOIaiona8X@tcp(127.0.0.1:33069)/geopaper?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"`
 	}
 	Redis struct {
 		Addr     string `default:"localhost:63799"`
 		Password string `default:"WQAOIaiona8X"`
-		DB       int    `default:"0"`
+		Db       int    `default:"0"`
 	}
 }
 

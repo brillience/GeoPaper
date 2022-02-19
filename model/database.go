@@ -12,14 +12,14 @@ import (
 )
 
 var (
-	db *gorm.DB
+	db      *gorm.DB
 	rdbPool *redis.Pool
 )
 
 func init() {
 	// 连接mysql
 	var err error
-	db, err = gorm.Open(mysql.Open(etc.Config.Mysql.DataSource), &gorm.Config{})
+	db, err = gorm.Open(mysql.Open(etc.Config.Mysql.Datasource), &gorm.Config{})
 	if err != nil {
 		log.Fatalln("Connecting mysql error: ", err.Error())
 	}
@@ -31,22 +31,22 @@ func init() {
 	// 连接redis
 	rdbPool = &redis.Pool{
 		Dial: func() (redis.Conn, error) {
-			c,err := redis.Dial("tcp",
+			c, err := redis.Dial("tcp",
 				etc.Config.Redis.Addr,
-				redis.DialDatabase(etc.Config.Redis.DB),
+				redis.DialDatabase(etc.Config.Redis.Db),
 				redis.DialReadTimeout(time.Duration(100)*time.Second),
 				redis.DialWriteTimeout(time.Duration(100)*time.Second),
 				redis.DialConnectTimeout(time.Duration(100)*time.Second),
 				redis.DialPassword(etc.Config.Redis.Password),
-				)
-			if err!=nil{
+			)
+			if err != nil {
 				return nil, err
 			}
-			return c,nil
+			return c, nil
 		},
-		MaxIdle: runtime.GOMAXPROCS(runtime.NumCPU()),
-		MaxActive: runtime.GOMAXPROCS(runtime.NumCPU()),
-		IdleTimeout: time.Duration(100)*time.Second,
-		Wait: true,
+		MaxIdle:     runtime.GOMAXPROCS(runtime.NumCPU()),
+		MaxActive:   runtime.GOMAXPROCS(runtime.NumCPU()),
+		IdleTimeout: time.Duration(100) * time.Second,
+		Wait:        true,
 	}
 }
