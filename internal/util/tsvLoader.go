@@ -82,7 +82,7 @@ func PushFieldsOfStudyChildrenToDB(filePath string, batchSize int) {
 	}
 	var fieldChildren model.FieldOfStudyChildren
 	fieldChildren.CreateInBatches(items, 100)
-	log.Panicln("Finished PushFieldsOfStudyChildrenToDB!")
+	log.Println("Finished PushFieldsOfStudyChildrenToDB!")
 }
 
 func PushPaperFieldsOfStudyToDB(filePath string) {
@@ -118,5 +118,5 @@ func PushPaperFieldsOfStudyToDB(filePath string) {
 		log.Fatalln(err.Error())
 	}
 	wg.Wait()
-	log.Panicln("Finished PushPaperFieldsOfStudyToDB!")
+	log.Println("Finished PushPaperFieldsOfStudyToDB!")
 }

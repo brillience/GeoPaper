@@ -21,10 +21,10 @@ func (receiver FieldsOfStudy) CreateInBatches(items []*FieldsOfStudy, batchSize 
 	db.CreateInBatches(items, batchSize)
 }
 
-func (receiver FieldsOfStudy) QueryById(id int64) *FieldsOfStudy {
-	item := FieldsOfStudy{}
-	db.First(&item, id)
-	return &item
+func (receiver FieldsOfStudy) QueryById(id int64) []FieldsOfStudy {
+	items := []FieldsOfStudy{}
+	db.Find(&items, id)
+	return items
 }
 
 func (receiver FieldsOfStudy) QueryByNormalizedNameAndLevel(normalizedName string, level int) []FieldsOfStudy {

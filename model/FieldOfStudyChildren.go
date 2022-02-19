@@ -9,8 +9,9 @@ func (FieldOfStudyChildren) CreateInBatches(items []*FieldOfStudyChildren, size 
 	db.CreateInBatches(items, size)
 }
 
-func (FieldOfStudyChildren) QueryById(id int64) *FieldOfStudyChildren {
-	item := FieldOfStudyChildren{}
-	db.First(&item, id)
-	return &item
+// 通过父学科的id查找子学科的id
+func (FieldOfStudyChildren) QueryById(id int64) []FieldOfStudyChildren {
+	items := []FieldOfStudyChildren{}
+	db.Find(&items, id)
+	return items
 }
